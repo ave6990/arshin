@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8">
+    <title>Результаты поверки</title>
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+</head>
+<body>
+    <header>
+        <p>Результаты поверки</p>
+        <p id="about"><a href="https://ave6990.github.io/arshin">О ресурсе</a></p>
+    </header>
+    <main>
+        <section id="filter">
+            <header>Поиск</header>
+            <main>
+                <label for="year">Год:</label>
+                <input type=text id="year" pattern="\d{1,4}">
+                <label for="organisation">Организация поверитель:</label>
+                <input type="text" id="organisation">
+                <label for="registry_number">Номер реестра:</label>
+                <input type=text id="registry_number">
+                <label for="mi_type">Тип СИ:</label>
+                <input type=text id="mi_type" pattern="\d{4,5}[-]?\d{0,2}">
+                <label for="serial_number">Заводской номер:</label>
+                <input type=text id="serial_number">
+                <button id=btn_search>Найти</button>
+            </main>
+        </section>
+        <section id="results">
+            <header>
+                <p>Результаты поиска</p>
+            </header>
+        </section>
+    </main>
+    <footer>
+        <p><copyright>Copyright &#169 2021 Александр Ермолаев</copyright><p>
+        <address>e-mail: ave6990@ya.ru</address>
+    </footer>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
