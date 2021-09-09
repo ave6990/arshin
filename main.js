@@ -26,7 +26,7 @@ document.getElementById('btn_search').addEventListener('click', () => {
 			org_title: encodeURI(`*${_getVal('organisation')}*`),
 			'mi.number': `*${_getVal('serial_number')}*`,
 			'mi.mitnumber': `*${_getVal('registry_number')}*`,
-			'mi.mitype': `*${_getVal('mi_type')}`
+			'mi.mitype': `*${_getVal('mi_type')}`,
 		},
 		q: '*',
 		fl: 'vri_id,mi.mitnumber,mi.mitype,mi.modification,mi.number,verification_date,valid_date,result_docnum',
@@ -34,6 +34,9 @@ document.getElementById('btn_search').addEventListener('click', () => {
 		rows: 10,
 		start: 0,
 	}
+    
+    console.log('good')
+
     const data = await verificationResults(filter_obj)
 
 	console.log(data)
