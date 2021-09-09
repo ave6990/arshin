@@ -1,7 +1,7 @@
 import * as axios from 'lib/axios.min.js'
 import * as ui from 'lib/ui.js'
 
-const _verificationResults = async (filter_obj) => {
+const verificationResults = async (filter_obj) => {
 	try {
 		const url = urlLib.getUrl('https://fgis.gost.ru/fundmetrology/cm/icdb/vri/select', filter_obj)
 		const res = await axios.get(url)
@@ -34,7 +34,7 @@ document.getElementById('btn_search').addEventListener('click', () => {
 		rows: 10,
 		start: 0,
 	}
-    const data = await _verificationResults(filter_obj)
+    const data = await verificationResults(filter_obj)
 
 	console.log(data)
 }
