@@ -104,6 +104,14 @@ table {
     overflow: scroll;
 }
 
+table a:link {
+    color: #222;
+}
+
+table a:visited {
+    color: #222;
+}
+
 td, th {
     font-size: 12pt;
     border-width: 1px;
