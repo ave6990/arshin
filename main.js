@@ -57,7 +57,11 @@ const _getFilter = () => {
 
         if (val) {
             if (field != 'verification_year') {
-                val = `*${val}*`
+                if (field == 'verification_date') {
+                    val = `[${val}]`
+                } else {
+                    val = `*${val}*`
+                }
             }
             query[field] = val
         }
