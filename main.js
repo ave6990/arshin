@@ -59,7 +59,7 @@ const _getFilter = () => {
         if (val) {
             if (field != 'verification_year') {
                 if (field == 'verification_date') {
-                    const valid_date = _getVal('valid_date')
+                    let valid_date = _getVal('valid_date')
                     if (valid_date) {
                         valid_date = `${valid_date}T00:00:00Z`
                     } else {
