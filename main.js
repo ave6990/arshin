@@ -37,6 +37,7 @@ const _verificationResults = async (filter_obj) => {
 }
 
 const _getVal = (id) => {
+    console.log(id)
     return document.getElementById(id).value
 }
 
