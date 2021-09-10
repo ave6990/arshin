@@ -116,7 +116,10 @@ const getRecords = async () => {
     document.getElementById('page_num').value = `${config.page_num + 1} из ${parseInt(config.records_count / config.rows_count) + 1}`
 }
 
-document.getElementById('btn_search').addEventListener('click', getRecords)
+document.getElementById('btn_search').addEventListener('click', () => {
+    config.page_num = 0
+    getRecords()
+})
 
 document.getElementById('page_num').addEventListener('change', async () => {
     let num = 1
