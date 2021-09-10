@@ -8,14 +8,14 @@ const config = {
     page_num: 0,
 }
 
-$('#btn_next').click(async () => {
+document.getElementById('btn_next').addEventListener('click', async () => {
     if (config.rows_count < config.records_count && (config.page_num + 1) * config.rows_count < config.records_count) {
         config.page_num += 1
         getRecords()
     }
 } )
 
-$('#btn_prev').click(async () => {
+document.getElementById('btn_prev').addEventListener('click', async () => {
     if (config.rows_count < config.records_count && config.page_num > 0) {
         config.page_num -= 1
         getRecords()
