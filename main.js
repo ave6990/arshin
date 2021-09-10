@@ -58,7 +58,13 @@ const _getFilter = () => {
         if (val) {
             if (field != 'verification_year') {
                 if (field == 'verification_date') {
-                    val = `[${val}]`
+                    const valid_date = _getVal(fields['valid_date'])
+                    if (valid_date) {
+                        valid_date = `${valid_date}T00:00:00Z`
+                    } else {
+                        valid_date = '*'
+                    }
+                    val = `[${val}T00:00:00Z TO ${valid_date}]`
                 } else {
                     val = `*${val}*`
                 }
