@@ -1,6 +1,6 @@
-import * as ui from '.lib/ui.js'
-import * as urlLib from '.lib/url.js'
-import * as date from '.lib/date.js'
+import * as ui from './lib/ui.js'
+import * as urlLib from './lib/url.js'
+import * as date from './lib/date.js'
 
 const config = {
     records_count: 0,
