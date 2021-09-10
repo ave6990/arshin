@@ -1,13 +1,38 @@
-import * as axios from 'lib/axios.min.js'
-import * as ui from 'lib/ui.js'
+import * as ui from '.lib/ui.js'
+import * as urlLib from '.lib/url.js'
+import * as date from '.lib/date.js'
 
-const verificationResults = async (filter_obj) => {
+const config = {
+    records_count: 0,
+    rows_count: 20,
+    page_num: 0,
+}
+
+$('#btn_next').click(async () => {
+    if (config.rows_count < config.records_count && (config.page_num + 1) * config.rows_count < config.records_count) {
+        config.page_num += 1
+        getRecords()
+    }
+} )
+
+$('#btn_prev').click(async () => {
+    if (config.rows_count < config.records_count && config.page_num > 0) {
+        config.page_num -= 1
+        getRecords()
+    }
+} )
+
+
+const _verificationResults = async (filter_obj) => {
 	try {
-		const url = urlLib.getUrl('https://fgis.gost.ru/fundmetrology/cm/icdb/vri/select', filter_obj)
-		const res = await axios.get(url)
-		return res.data.response
+		const url = urlLib.getUrl('https://fgis.gost.ru/fundmetrology/cm/xcdb/vri/select', filter_obj)
+        console.log(url)
+        const response = await fetch(url)
+        const data = response.json()
+
+		return data
 	} catch (err) {
-		console.log('fgis_api.js error!!!')
+		console.log('fgis_api.js error!!!', err)
 	}
 }
 
@@ -16,28 +41,89 @@ const _getVal = (id) => {
 }
 
 const _getFilter = () => {
+    const query = {}
 
+    const fields = {
+        'verification_year': 'year',
+        'org_title': 'organisation',
+        'mi.number': 'serial_number',
+        'mi.mitnumber': 'registry_number',
+        'mi.modification': 'mi_modification',
+        'verification_date': 'verification_date',
+    }
+
+    for (let field in fields) {
+        let val = _getVal(fields[field])
+
+        if (val) {
+            if (field != 'verification_year') {
+                val = `*${val}*`
+            }
+            query[field] = val
+        }
+    }
+
+    return query
 }
 
-document.getElementById('btn_search').addEventListener('click', () => {
+const getRecords = async () => {
+    const query = _getFilter()
+
 	const filter_obj = {
-		fq: {
-			verification_year: _getVal('year'),
-			org_title: encodeURI(`*${_getVal('organisation')}*`),
-			'mi.number': `*${_getVal('serial_number')}*`,
-			'mi.mitnumber': `*${_getVal('registry_number')}*`,
-			'mi.mitype': `*${_getVal('mi_type')}`,
-		},
 		q: '*',
 		fl: 'vri_id,mi.mitnumber,mi.mitype,mi.modification,mi.number,verification_date,valid_date,result_docnum',
 		sort: 'verification_date+desc,org_title+asc',
-		rows: 10,
-		start: 0,
+		rows: config.rows_count,
+		start: config.page_num * config.rows_count,
 	}
-    
-    console.log('good')
 
-    const data = await verificationResults(filter_obj)
+    filter_obj.fq = query
 
-	console.log(data)
+    //const data = await _verificationResults(Object.assign({}, query, filter_obj))
+    const data = await _verificationResults(filter_obj)
+    config.records_count = data.response.numFound
+    document.getElementById('counts').innerHTML = config.records_count
+
+    const docs = data.response.docs.map((doc) => {
+        doc.vri_id = `<a href="https://fgis.gost.ru/fundmetrology/cm/results/${doc.vri_id}">${doc.vri_id}</a>`
+        doc.verification_date = date.toString(new Date(doc.verification_date))
+        doc.valid_date = date.toString(new Date(doc.valid_date))
+    })
+
+    const table = ui.jsonToTable(data.response.docs, {
+            'vri_id': 'Номер в Аршине',
+            'mi.mitnumber': 'Рег. номер',
+            'mi.mitype': 'Тип СИ',
+            'mi.modification': 'Модификация СИ',
+            'mi.number': 'Зав. номер СИ',
+            'verification_date': 'Дата поверки',
+            'valid_date': 'Годен до',
+            'result_docnum': 'Номер документа',
+        },
+        'records_table')
+    document.getElementById('table_results').innerHTML = table
+    document.getElementById('page_num').value = `${config.page_num + 1} из ${parseInt(config.records_count / config.rows_count) + 1}`
 }
+
+document.getElementById('btn_search').addEventListener('click', getRecords)
+
+document.getElementById('page_num').addEventListener('change', async () => {
+    let num = 1
+
+    try {
+        num = parseInt(document.getElementById('page_num').value.split(' ')[0])
+    }
+    catch (e) {
+        num = 1
+        console.log(e)
+    }
+
+    let pages = parseInt(config.records_count / config.rows_count) + 1
+
+    if (num < 1) num = 1
+    if (num > pages) num = pages
+    
+    config.page_num = num - 1
+    console.log(config.page_num)
+    getRecords()
+} )

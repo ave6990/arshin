@@ -53,7 +53,6 @@ header {
 
 footer {
     text-align: center;
-    flex-shrink: 0;
     grid-row: 3;
 }
 
@@ -63,6 +62,11 @@ footer {
 
 #results {
     grid-column: 2;
+}
+
+#btn_prev, #page_num, #btn_next {
+    display: inline;
+    max-width: 150px;
 }
 
 label {
