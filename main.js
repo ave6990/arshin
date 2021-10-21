@@ -27,9 +27,9 @@ const _verificationResults = async (filter_obj) => {
 	try {
 		const url = urlLib.getUrl('https://fgis.gost.ru/fundmetrology/cm/xcdb/vri/select', filter_obj)
         console.log(url)
-        const response = await fetch(url)
 
         document.getElementById('counts').innerHTML = 'Выполняется поиск. Ждите!'
+        const response = await fetch(url)
 
         const data = response.json()
 
@@ -40,7 +40,6 @@ const _verificationResults = async (filter_obj) => {
 }
 
 const _getVal = (id) => {
-    console.log(id)
     return document.getElementById(id).value
 }
 
@@ -132,7 +131,7 @@ document.getElementById('page_num').addEventListener('change', async () => {
     }
     catch (e) {
         num = 1
-        console.log(e)
+        console.error(e)
     }
 
     let pages = parseInt(config.records_count / config.rows_count) + 1
