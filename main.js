@@ -29,18 +29,7 @@ const _verificationResults = async (filter_obj) => {
         console.log(url)
         const response = await fetch(url)
 
-        const reader = response.body.getReader()
         document.getElementById('counts').innerHTML = 'Выполняется поиск. Ждите!'
-
-        while (true) {
-            const {done, value} = await reader.read()
-
-            if (done) {
-                break
-            }
-            console.info(value)
-            console.info(`Получено ${value.length} байт`)
-        }
 
         const data = response.json()
 
