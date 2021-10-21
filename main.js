@@ -28,11 +28,25 @@ const _verificationResults = async (filter_obj) => {
 		const url = urlLib.getUrl('https://fgis.gost.ru/fundmetrology/cm/xcdb/vri/select', filter_obj)
         console.log(url)
         const response = await fetch(url)
+
+        const reader = response.body.getReader()
+        document.getElementById('counts').innerHTML = 'Выполняется поиск. Ждите!'
+
+        while (true) {
+            const {done, value} = await reader.read()
+
+            if (done) {
+                break
+            }
+            console.info(value)
+            console.info(`Получено ${value.length} байт`)
+        }
+
         const data = response.json()
 
 		return data
 	} catch (err) {
-		console.log('fgis_api.js error!!!', err)
+		console.error('fgis_api.js error!!!', err)
 	}
 }
 
