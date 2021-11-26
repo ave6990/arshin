@@ -112,11 +112,21 @@ table a:visited {
     color: #222;
 }
 
+th {
+    background: #afcde7;
+    color: white;
+}
+
 td, th {
     font-size: 12pt;
     border-width: 1px;
     border-style: solid;
-    border-color: #086fa1;
+    /*border-color: #086fa1;*/
+    border-color: white;
     padding: 3px;
     margin: 0;
+}
+
+td {
+    background: #d8e6f3;
 }
