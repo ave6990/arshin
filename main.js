@@ -29,7 +29,7 @@ const _verificationResults = async (filter_obj) => {
         console.log(url)
 
         document.getElementById('counts').innerHTML = 'Выполняется поиск. Ждите!'
-        const response = await fetch(url)
+        const response = await fetch(url, { mode: 'no-cors', } )
 
         const data = response.json()
 
